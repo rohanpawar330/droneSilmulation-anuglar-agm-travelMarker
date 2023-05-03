@@ -4,7 +4,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AgmCoreModule } from '@agm/core';
 import { NgPrimeModule } from './ng-prime/ng-prime.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent
@@ -14,6 +15,8 @@ import { FormsModule } from '@angular/forms';
     NgPrimeModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyD1I0YWkHHVf9PsCMmSp0b7hszAneXM6yQ'
     })

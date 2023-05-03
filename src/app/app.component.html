@@ -1,19 +1,49 @@
-<mat-card>
-  <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" (mapReady)="onMapReady($event)">
-  </agm-map>
-</mat-card>
-<div class="controls">
-  <button (click)="play()">Play</button>
-  <button (click)="pause()">Pause</button>
-  <button (click)="reset()">Reset</button>
-  <button (click)="next()">Next</button>
-  <button (click)="prev()">Previous</button>
-  <button (click)="fast()">Fast</button>
-  <span id="speed">Speed: {{ speedMultiplier }}x</span>
-  <button (click)="slow()">Slow</button>
+<agm-map id="map" *ngIf="refreshMap" [latitude]="lat" [longitude]="lng" [zoom]="zoom" (mapReady)="onMapReady($event)">
+</agm-map>
+<p-skeleton *ngIf="!refreshMap"></p-skeleton>
+
+<div class="controls mt-3 flex justify-content-between">
+  <div><button pButton class="p-1 p-button-raised mr-2" (click)="play()">Play</button>
+    <button pButton class="p-1 p-button-raised mr-2" (click)="pause()">Pause</button>
+    <button pButton class="p-1 p-button-raised mr-2" (click)="reset()">Reset</button>
+    <button pButton class="p-1 p-button-raised mr-2" (click)="next()">Next</button>
+    <button pButton class="p-1 p-button-raised mr-2" (click)="prev()">Previous</button>
+    <button pButton class="p-1 p-button-raised mr-2" (click)="fast()">Fast</button>
+    <span id="speed" class="mr-2">Speed: {{ speedMultiplier }}x</span>
+    <button pButton class="p-1 p-button-raised mr-2" (click)="slow()">Slow</button>
+  </div>
+  <div class="text-orange-400">Zoom out to view clearly</div>
 </div>
 
-<p-inputNumber [(ngModel)]="longitude" inputId="longitude" mode="decimal">
-</p-inputNumber>
-<p-inputNumber [(ngModel)]="latitude" inputId="latitude" mode="decimal">
-</p-inputNumber>
+<p-divider></p-divider>
+
+<div class="content mt-3 p-2">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="formgrid grid mb-3">
+      <div>
+        <label>longitude</label>
+        <p-inputNumber class="w-full" formControlName="longitude" mode="decimal"
+          [minFractionDigits]="15"></p-inputNumber>
+      </div>
+      <div>
+        <label>latitude</label>
+        <p-inputNumber class="w-full" formControlName="latitude" mode="decimal"
+          [minFractionDigits]="15"></p-inputNumber>
+      </div>
+    </div>
+
+    <button pButton type="submit" [disabled]="form.invalid" label="Add Values"
+      class="py-1 p-button-raised  p-button-rounded" icon="pi pi-add"></button>
+    <button pButton type="button" label="Clear" class="ml-1 py-1 p-button-raised p-button-secondary p-button-rounded"
+      (click)="clearForm()"></button>
+  </form>
+</div>
+<p-divider></p-divider>
+<br>
+<div class="p-1">
+  <div>JSON format only</div>
+  <input pButton class="p-button-outlined  p-1" type="file" (change)="onFileSelected($event)">
+  <pre *ngIf="uploaded">{{locationDataList|json}}</pre>
+</div>
+
+<br>
